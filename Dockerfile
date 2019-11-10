@@ -1,15 +1,7 @@
-FROM node:12
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-RUN npm install
-
-# Copying source files
+FROM node:12.13-stretch-slim
+WORKDIR /app
+RUN npm install -g yarn lerna
 COPY . .
-
-# Building app
-RUN npm run build
-
-# Running the app
-CMD [ "npm", "start" ]
+RUN lerna bootstrap
+RUN lerna run build
+ENTRYPOINT [ "lerna", "run", "start" ]
